@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ShotFlow · AI 分镜协作台</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./"
+        ><span class="brandmark">SF</span><strong>ShotFlow</strong
+        ><span class="brand-sub">AI 分镜协作台</span></a
+      ><a href="#guide">使用说明 ↗</a>
+    </header>
+    <main>
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">STORY TO SHOT</p>
+          <h1>让每个镜头，都有依据。</h1>
+          <p class="muted">从脚本拆解到局部修改，把创作决策留在你手里。</p>
+        </div>
+        <span id="mode-badge" class="pill">规则演示 · 无需密钥</span>
+      </section>
+      <div
+        id="notice"
+        role="status"
+        aria-live="polite"
+        class="notice"
+        hidden
+      ></div>
+      <div class="workspace">
+        <aside class="panel brief-panel">
+          <div class="section-label">
+            <span>01</span>
+            <h2>创作简报</h2>
+            <button id="sample" class="text-button">填入样例</button>
+          </div>
+          <form id="brief-form">
+            <fieldset id="brief-fields">
+              <label for="title">项目名称</label
+              ><input id="title" maxlength="100" required />
+              <label for="script">脚本 <small>建议一段一个镜头</small></label
+              ><textarea
+                id="script"
+                rows="9"
+                maxlength="12000"
+                required
+              ></textarea>
+              <div class="two">
+                <div>
+                  <label for="characters">角色表</label
+                  ><input id="characters" required /><small
+                    >多个角色以顿号分隔</small
+                  >
+                </div>
+                <div>
+                  <label for="duration">目标时长（秒）</label
+                  ><input
+                    id="duration"
+                    type="number"
+                    min="10"
+                    max="300"
+                    step="1"
+                    required
+                  />
+                </div>
+              </div>
+              <label for="locations">地点表</label
+              ><input id="locations" required /><small
+                >仅使用已确认的角色与地点</small
+              >
+              <label for="mode">生成方式</label
+              ><select id="mode">
+                <option value="demo">规则演示（按段落拆镜）</option>
+                <option value="live">真实模型（需本地服务配置）</option>
+              </select>
+              <button id="generate" class="primary wide" type="submit">
+                生成分镜草案 <span>→</span>
+              </button>
+            </fieldset>
+          </form>
+          <button id="cancel" class="secondary wide" hidden>取消等待</button>
+          <p id="service" class="micro">检查本地模型服务…</p>
+          <div class="divider"></div>
+          <div class="section-label">
+            <span>02</span>
+            <h2>版本记录</h2>
+          </div>
+          <select id="history" aria-label="恢复历史版本">
+            <option value="">尚无保存版本</option></select
+          ><button id="save" class="secondary wide" disabled>
+            保存当前版本
+          </button>
+          <p class="micro">保存于当前浏览器。定期导出 JSON，跨设备继续编辑。</p>
+        </aside>
+        <section class="canvas">
+          <div class="canvas-toolbar">
+            <div>
+              <h2 id="board-title">分镜工作区</h2>
+              <p id="board-meta" class="muted">准备好简报后，生成第一版草案</p>
+            </div>
+            <div class="toolbar-actions">
+              <button id="export-md" disabled>Markdown</button
+              ><button id="export-html" disabled>打印版</button
+              ><button id="export-json" disabled>JSON</button
+              ><label class="button-label" for="import"
+                >导入<input id="import" type="file" accept=".json" hidden
+              /></label>
+            </div>
+          </div>
+          <div id="empty" class="empty">
+            <div class="empty-frame">
+              <span>01</span><i></i><b>从一个场景开始</b>
+            </div>
+            <h3>故事已经有了，镜头还可以更清楚。</h3>
+            <p>
+              填入左侧简报，或直接使用校园宣传片样例。<br />首版输出文字分镜与绘图提示词。
+            </p>
+          </div>
+          <div id="checks" aria-live="polite"></div>
+          <div id="shots" class="shot-grid"></div>
+          <section id="change-panel" class="panel change-panel" hidden>
+            <div class="section-label">
+              <span>03</span>
+              <h2>变更影响检查</h2>
+            </div>
+            <p class="muted">
+              修改角色或地点前，先查看受影响的镜头。原始脚本依据会保留。
+            </p>
+            <div class="change-inputs">
+              <label
+                >变更对象<select id="change-kind">
+                  <option value="character">角色</option>
+                  <option value="location">地点</option>
+                </select></label
+              ><label>原名称<select id="change-from"></select></label
+              ><label
+                >新名称<input
+                  id="change-to"
+                  maxlength="40"
+                  placeholder="例如：小周" /></label
+              ><button id="preview-change" class="secondary">查看影响</button>
+            </div>
+            <div id="change-preview"></div>
+            <button id="apply-change" class="primary" hidden>
+              确认应用到相关镜头
+            </button>
+          </section>
+        </section>
+      </div>
+      <section id="guide" class="guide">
+        <h2>把它当作创作工作台</h2>
+        <div>
+          <p>
+            <strong>先生成，再判断</strong
+            ><br />规则演示不调用模型。真实模式通过你自己的本地服务发起请求，失败会明确显示。
+          </p>
+          <p>
+            <strong>机器检查有边界</strong
+            ><br />校验角色、地点、时长与来源引用。镜头美感、自由文本事实与拍摄可行性由人复核。
+          </p>
+          <p>
+            <strong>可带走的作品</strong><br />保存不同版本，导出 Markdown、JSON
+            或可打印网页。当前不生成图像、视频或替你发布。
+          </p>
+        </div>
+      </section>
+    </main>
+    <dialog id="edit-dialog">
+      <form id="edit-form">
+        <div class="dialog-title">
+          <h2 id="edit-title">编辑镜头</h2>
+          <button type="button" id="close-edit" aria-label="关闭编辑">×</button>
+        </div>
+        <div class="two">
+          <label
+            >时长（秒）<input
+              name="duration"
+              type="number"
+              min="1"
+              max="300"
+              required /></label
+          ><label>地点<select name="location"></select></label>
+        </div>
+        <label>角色（顿号分隔）<input name="characters" /></label>
+        <div class="two">
+          <label>景别<input name="framing" required /></label
+          ><label>运镜<input name="movement" required /></label>
+        </div>
+        <label
+          >画面内容<textarea name="action" rows="3" required></textarea></label
+        ><label>对白<textarea name="dialogue" rows="2"></textarea></label
+        ><label
+          >绘图提示<textarea name="image_prompt" rows="3"></textarea></label
+        ><button class="primary wide" type="submit">保存镜头修改</button>
+      </form>
+    </dialog>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

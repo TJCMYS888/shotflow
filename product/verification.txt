@@ -1,0 +1,66 @@
+Verification date: 2026-10-15 (Asia/Shanghai)
+Python: 3.12.14
+Project: shotflow
+
+$ node --test tests/core.test.mjs
+✔ blank script is rejected before generation (4.9585ms)
+✔ invalid duration is rejected (0.5796ms)
+✔ rule demo preserves source and total duration (11.0512ms)
+✔ unknown characters and locations are surfaced (0.9348ms)
+✔ duration change is detected (0.8024ms)
+✔ change preview identifies affected shots without mutating original (3.0766ms)
+✔ apply change requires explicit confirmation (0.8597ms)
+✔ confirmed change makes a new revision and keeps source evidence unchanged (1.5106ms)
+✔ duplicate destination and empty change are rejected (1.0476ms)
+✔ markdown export includes explicit provenance (1.3899ms)
+✔ print HTML escapes untrusted script text (1.1448ms)
+✔ invalid model output never silently becomes a demo result (0.8742ms)
+✔ model JSON is checked and labelled separately (0.9179ms)
+✔ demo never silently discards script paragraphs (0.5162ms)
+✔ import checks missing metadata and invalid revisions (0.4686ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 350.4429
+
+
+exit_code=0
+
+$ python -m unittest discover -s tests -p test_server.py -v
+
+test_cross_origin_is_rejected (test_server.ServerTests.test_cross_origin_is_rejected) ... ok
+test_foreign_host_is_rejected (test_server.ServerTests.test_foreign_host_is_rejected) ... ok
+test_index_is_served (test_server.ServerTests.test_index_is_served) ... ok
+test_invalid_json_is_a_client_error (test_server.ServerTests.test_invalid_json_is_a_client_error) ... ok
+test_invalid_roles_are_rejected (test_server.ServerTests.test_invalid_roles_are_rejected) ... ok
+test_large_body_is_rejected (test_server.ServerTests.test_large_body_is_rejected) ... ok
+test_mock_provider_contract (test_server.ServerTests.test_mock_provider_contract) ... ok
+test_modules_have_browser_mime_type (test_server.ServerTests.test_modules_have_browser_mime_type) ... ok
+test_provider_error_redacts_upstream_body (test_server.ServerTests.test_provider_error_redacts_upstream_body) ... ok
+test_source_and_path_traversal_are_not_served (test_server.ServerTests.test_source_and_path_traversal_are_not_served) ... ok
+test_status_never_exposes_key (test_server.ServerTests.test_status_never_exposes_key) ... ok
+test_unconfigured_model_returns_actionable_error (test_server.ServerTests.test_unconfigured_model_returns_actionable_error) ... ok
+test_unknown_endpoint_is_not_silently_successful (test_server.ServerTests.test_unknown_endpoint_is_not_silently_successful) ... ok
+test_wrong_content_type_is_rejected (test_server.ServerTests.test_wrong_content_type_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.623s
+
+OK
+
+exit_code=0
+
+$ node --check docs/app.js
+
+
+exit_code=0
+
+$ node scripts/export-demo.mjs
+Exported four rule-demo examples; no model calls.
+
+
+exit_code=0
