@@ -23,4 +23,6 @@
 
 ![桌面](assets/desktop.jpg)
 
-模型接口只连接本机测试服务，验证请求与响应契约；没有外部模型质量、费用或性能结论。规则样例只证明功能，不能证明镜头美感或真实拍摄可行性。GitHub远程CI尚未运行，公网演示尚未发布。
+模型接口只连接本机测试服务，验证请求与响应契约；没有外部模型质量、费用或性能结论。规则样例只证明功能，不能证明镜头美感或真实拍摄可行性。
+
+首次源码发布提交`5b98b29`已通过[GitHub远程检查](https://github.com/TJCMYS888/shotflow/actions/runs/38720548804)。[在线规则演示](https://tjcmys888.github.io/shotflow/)由GitHub Pages发布；后续提交的检查状态见仓库Actions。

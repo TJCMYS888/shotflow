@@ -2,6 +2,8 @@
 
 面向校园宣传片和短视频创作者的产品原型：把脚本拆成可编辑镜头，在角色或地点变更前检查影响范围，保存版本并导出分镜。
 
+[在线演示](https://tjcmys888.github.io/shotflow/) · [源码仓库](https://github.com/TJCMYS888/shotflow) · [自动检查](https://github.com/TJCMYS888/shotflow/actions/workflows/ci.yml)
+
 ![ShotFlow界面](product/assets/desktop.jpg)
 
 ## 60秒体验
@@ -52,9 +54,9 @@ node scripts/export-demo.mjs
 
 样例写入 `examples/`。测试口径和实际记录见 [测试报告](product/TEST_REPORT.md)。
 
-## 发布到GitHub与Pages
+## 在线演示与自行部署
 
-源码仓库与演示站是两件事：推送代码后，在仓库 **Settings → Pages → Deploy from a branch → main → /docs** 保存。Pages只运行离线演示；Python服务和密钥不在Pages执行。部署完成后，使用GitHub显示的实际网址，勿在简历填猜测链接。
+在线演示通过GitHub Pages发布，只运行规则演示；真实模型需按上文启动本机Python服务。Python服务和密钥不在Pages执行。自行部署时，在仓库 **Settings → Pages → Deploy from a branch → main → /docs** 保存。
 
 仓库包含GitHub Actions测试工作流，推送及Pull Request会自动运行核心规则、HTTP契约和脚本语法检查。
 
